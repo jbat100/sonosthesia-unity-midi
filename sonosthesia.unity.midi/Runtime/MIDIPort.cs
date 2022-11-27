@@ -98,7 +98,7 @@ namespace Sonosthesia.MIDI
                 
                 if (stamp < 0 || size == 0) break;
                 
-                Debug.Log($"{nameof(ProcessMessageQueue)} iteration with stamp {stamp} {size} status {message[0]:X}");
+                //Debug.Log($"{nameof(ProcessMessageQueue)} iteration with stamp {stamp} {size} status {message[0]:X}");
                 
                 if (size == 1)
                 {
@@ -129,7 +129,7 @@ namespace Sonosthesia.MIDI
                         if (message[0] == 0xf2)
                         {
                             _clockCount = 0;
-                            _songPositionPointerSubject.OnNext(new MIDISongPositionPointer((message[1] << 7) | message[2]));
+                            _songPositionPointerSubject.OnNext(new MIDISongPositionPointer((message[2] << 7) | message[1]));
                         }
                     }
 
