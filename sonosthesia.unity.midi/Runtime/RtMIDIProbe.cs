@@ -8,11 +8,11 @@ namespace Sonosthesia.MIDI
     //
     // This is actually an RtMidi input object without any input functionality.
     //
-    sealed unsafe class MIDIProbe : System.IDisposable
+    sealed unsafe class RtMIDIProbe : System.IDisposable
     {
         RtMidiDll.Wrapper* _rtmidi;
 
-        public MIDIProbe()
+        public RtMIDIProbe()
         {
             _rtmidi = RtMidiDll.InCreateDefault();
 
@@ -20,7 +20,7 @@ namespace Sonosthesia.MIDI
                 UnityEngine.Debug.LogWarning("Failed to create an RtMidi device object.");
         }
 
-        ~MIDIProbe()
+        ~RtMIDIProbe()
         {
             if (_rtmidi == null || !_rtmidi->ok) return;
             RtMidiDll.InFree(_rtmidi);

@@ -6,17 +6,17 @@ namespace Sonosthesia.MIDI
     // MIDI device driver class that manages all MIDI ports (interfaces) found
     // in the system.
     //
-    internal sealed class MIDIDriver : System.IDisposable
+    internal sealed class RtMIDIDriver : System.IDisposable
     {
         #region Internal objects and methods
 
-        private MIDIProbe _probe;
-        private readonly List<MIDIPort> _ports = new List<MIDIPort>();
+        private RtMIDIProbe _probe;
+        private readonly List<RtMIDIPort> _ports = new List<RtMIDIPort>();
 
         private void ScanPorts()
         {
             for (var i = 0; i < _probe.PortCount; i++)
-                _ports.Add(new MIDIPort(i, _probe.GetPortName(i)));
+                _ports.Add(new RtMIDIPort(i, _probe.GetPortName(i)));
         }
 
         private void DisposePorts()
@@ -31,7 +31,7 @@ namespace Sonosthesia.MIDI
 
         public void Update()
         {
-            if (_probe == null) _probe = new MIDIProbe();
+            if (_probe == null) _probe = new RtMIDIProbe();
 
             // Rescan the ports if the count of the ports doesn't match.
             if (_ports.Count != _probe.PortCount)

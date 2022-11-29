@@ -10,7 +10,7 @@ namespace Sonosthesia.MIDI.Timeline
     {
         [SerializeField] private float _tempo = 120;
         
-        [SerializeField] private MIDIInput _input;
+        [SerializeField] private RtMIDIInput _input;
 
         [SerializeField] private PlayableDirector _director;
 
