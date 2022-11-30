@@ -4,15 +4,15 @@ using Debug = UnityEngine.Debug;
 
 namespace Sonosthesia.MIDI
 {
-    [RequireComponent(typeof(RtMIDIInput))]
+    [RequireComponent(typeof(MIDIInput))]
     public class MIDIInputDebug : MonoBehaviour
     {
-        private RtMIDIInput _input;
+        private MIDIInput _input;
         private CompositeDisposable _subscriptions = new ();
         
         protected void Awake()
         {
-            _input = GetComponent<RtMIDIInput>();
+            _input = GetComponent<MIDIInput>();
         }
 
         protected void OnEnable()

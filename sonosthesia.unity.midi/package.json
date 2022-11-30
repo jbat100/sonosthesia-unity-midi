@@ -8,7 +8,7 @@
   "displayName": "Sonosthesia MIDI",
   "keywords": [ "unity" ],
   "license": "Unlicense",
-  "name": "sonosthesia.midi",
+  "name": "com.sonosthesia.midi",
   "repository": "github:jbat100/sonosthesia-unity-midi",
   "unity": "2021.3",
   "unityRelease": "28f1",
