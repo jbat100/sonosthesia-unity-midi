@@ -42,14 +42,18 @@
     "com.unity.modules.video": "1.0.0",
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
-    "com.unity.modules.xr": "1.0.0"
+    "com.unity.modules.xr": "1.0.0",
+    "com.sonosthesia.adaptivemidi": "file:/Users/jonathan/Sonosthesia/sonosthesia-unity-adaptivemidi/com.sonosthesia.adaptivemidi",
+    "com.sonosthesia.flow": "file:/Users/jonathan/Sonosthesia/sonosthesia-unity-flow/com.sonosthesia.flow",
+    "com.sonosthesia.utils": "file:/Users/jonathan/Sonosthesia/sonosthesia-unity-utils/com.sonosthesia.utils"
   },
   "scopedRegistries": [
     {
       "name": "package.openupm.com",
       "url": "https://package.openupm.com",
       "scopes": [
-        "com.neuecc.unirx"
+        "com.neuecc.unirx",
+        "com.cysharp.unitask"
       ]
     },
     {

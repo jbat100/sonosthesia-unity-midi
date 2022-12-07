@@ -2,8 +2,10 @@
     "name": "Sonosthesia.MIDI",
     "rootNamespace": "",
     "references": [
-        "GUID:c7e9e20acafe53118b1ee620f925d4c8",
-        "GUID:560b04d1a97f54a4e82edc0cbbb69285"
+        "GUID:560b04d1a97f54a4e82edc0cbbb69285",
+        "GUID:6c6dc842e821b4881bee7a84bbd34b94",
+        "GUID:d13cd110c9ead484abd4d8de740b818b",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

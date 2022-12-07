@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.cysharp.unitask": {
+      "version": "2.3.3",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://package.openupm.com"
+    },
     "com.neuecc.unirx": {
       "version": "7.1.0",
       "depth": 1,
@@ -7,8 +14,37 @@
       "dependencies": {},
       "url": "https://package.openupm.com"
     },
+    "com.sonosthesia.adaptivemidi": {
+      "version": "file:/Users/jonathan/Sonosthesia/sonosthesia-unity-adaptivemidi/com.sonosthesia.adaptivemidi",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.neuecc.unirx": "7.1.0"
+      }
+    },
+    "com.sonosthesia.flow": {
+      "version": "file:/Users/jonathan/Sonosthesia/sonosthesia-unity-flow/com.sonosthesia.flow",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.cysharp.unitask": "2.3.3",
+        "com.neuecc.unirx": "7.1.0",
+        "com.sonosthesia.utils": "1.0.0"
+      }
+    },
     "com.sonosthesia.midi": {
       "version": "file:/Users/jonathan/Sonosthesia/sonosthesia-unity-midi/com.sonosthesia.midi",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {
+        "com.neuecc.unirx": "7.1.0",
+        "com.sonosthesia.adaptivemidi": "1.0.0",
+        "com.sonosthesia.flow": "1.0.0",
+        "com.sonosthesia.utils": "1.0.0"
+      }
+    },
+    "com.sonosthesia.utils": {
+      "version": "file:/Users/jonathan/Sonosthesia/sonosthesia-unity-utils/com.sonosthesia.utils",
       "depth": 0,
       "source": "local",
       "dependencies": {
