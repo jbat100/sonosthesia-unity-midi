@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Sonosthesia.MIDI;
+using Sonosthesia.AdaptiveMIDI;
+using Sonosthesia.Flow;
 using UniRx;
 using UnityEngine;
 
@@ -11,17 +12,17 @@ namespace Sonosthesia.MIDI
 #if UNITY_EDITOR
     using UnityEditor;
 
-    [CustomEditor(typeof(MIDIChannelNoteSequencer))]
-    public class MIDIChannelNoteSequencerEditor : Editor
+    [CustomEditor(typeof(MIDINoteChannelSequencer))]
+    public class MIDINoteChannelSequencerEditor : Editor
     {
         public override void OnInspectorGUI()
         {
             DrawDefaultInspector();
 
-            MIDIChannelNoteSequencer sequencer = (MIDIChannelNoteSequencer)target;
-            if(GUILayout.Button("Start"))
+            MIDINoteChannelSequencer sequencer = (MIDINoteChannelSequencer)target;
+            if(GUILayout.Button("Play"))
             {
-                sequencer.Start();
+                sequencer.Play();
             }
             if(GUILayout.Button("Stop"))
             {
@@ -31,7 +32,7 @@ namespace Sonosthesia.MIDI
     }
 #endif
     
-    public class MIDIChannelNoteSequencer : ChannelSequencer<MIDINote>
+    public class MIDINoteChannelSequencer : ChannelSequencer<MIDINote>
     {
         [Serializable]
         private class SequenceEvent
@@ -52,7 +53,7 @@ namespace Sonosthesia.MIDI
         
         private CancellationTokenSource _cancellationTokenSource;
 
-        public void Start()
+        public void Play()
         {
             _cancellationTokenSource?.Cancel();
             _cancellationTokenSource = new CancellationTokenSource();
@@ -89,11 +90,11 @@ namespace Sonosthesia.MIDI
         private async UniTask PlaySequenceEvent(SequenceEvent sequenceEvent, CancellationToken cancellationToken)
         {
             await UniTask.Delay(TimeSpan.FromSeconds(sequenceEvent.Delay), cancellationToken: cancellationToken);
-            MIDINote noteOn = new MIDINote(_channel, sequenceEvent.Note, sequenceEvent.Velocity / 127f);
+            MIDINote noteOn = new MIDINote(_channel, sequenceEvent.Note, sequenceEvent.Velocity);
             IObservable<MIDINote> stream = Observable.Return(noteOn);
             if (_emmitNoteOff)
             {
-                MIDINote noteOff = new MIDINote(_channel, sequenceEvent.Note, 0f);
+                MIDINote noteOff = new MIDINote(_channel, sequenceEvent.Note, 0);
                 stream = stream.Concat(Observable.Timer(TimeSpan.FromSeconds(sequenceEvent.Duration))
                     .Select(_ => noteOff));
             }

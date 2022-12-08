@@ -1,5 +1,6 @@
 using System;
 using Sonosthesia.Flow;
+using Sonosthesia.AdaptiveMIDI;
 using UnityEngine;
 using UniRx;
 
@@ -7,7 +8,7 @@ namespace Sonosthesia.MIDI
 {
     public class MIDIControlSignal : Signal<float>
     {
-        [SerializeField] private MIDIControlReceiver _receiver;
+        [SerializeField] private MIDIInput _input;
 
         [SerializeField] private int _channel;
 
@@ -17,16 +18,16 @@ namespace Sonosthesia.MIDI
         
         protected void Awake()
         {
-            if (!_receiver)
+            if (!_input)
             {
-                _receiver = GetComponentInParent<MIDIControlReceiver>();
+                _input = GetComponentInParent<MIDIInput>();
             }
         }
 
         protected void OnEnable()
         {
             _subscription?.Dispose();
-            _subscription = _receiver.ControlObservable
+            _subscription = _input.ControlObservable
                 .Where(control => control.Channel == _channel && control.Number == _number)
                 .Subscribe(control =>
                     {
