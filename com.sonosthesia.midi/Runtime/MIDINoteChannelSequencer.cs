@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
-using Sonosthesia.AdaptiveMIDI;
+using Sonosthesia.AdaptiveMIDI.Messages;
 using Sonosthesia.Flow;
 using UniRx;
 using UnityEngine;

@@ -4,6 +4,7 @@ using Sonosthesia.AdaptiveMIDI;
 using Sonosthesia.Flow;
 using UniRx;
 using UnityEngine;
+using Sonosthesia.AdaptiveMIDI.Messages;
 
 namespace Sonosthesia.MIDI
 {
