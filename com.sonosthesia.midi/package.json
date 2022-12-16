@@ -3,8 +3,7 @@
   "dependencies": {
     "com.neuecc.unirx": "7.1.0",
     "com.sonosthesia.adaptivemidi": "1.0.0",
-    "com.sonosthesia.flow": "1.0.0",
-    "com.sonosthesia.utils": "1.0.0"
+    "com.sonosthesia.flow": "1.0.0"
   },
   "description": "Sonosthesia unity midi",
   "displayName": "Sonosthesia MIDI",
