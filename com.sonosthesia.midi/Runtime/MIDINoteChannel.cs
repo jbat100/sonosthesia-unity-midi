@@ -12,10 +12,29 @@ namespace Sonosthesia.MIDI
     {
         [SerializeField] private MIDIInput _input;
 
+        [SerializeField] private int _channel;
+
+        [SerializeField] private int _lowerPitch;
+
+        [SerializeField] private int _upperPitch = 127;
+        
         private readonly CompositeDisposable _subscriptions = new ();
 
         private readonly Dictionary<int, Guid> _notes = new ();
 
+        protected virtual bool ShouldFilterNote(MIDINote note)
+        {
+            if (_channel >= 0 && note.Channel != _channel)
+            {
+                return true;
+            }
+            if (note.Note < _lowerPitch || note.Note > _upperPitch)
+            {
+                return true;
+            }
+            return false;
+        }
+        
         protected override void OnEnable()
         {
             base.OnEnable();
@@ -26,6 +45,10 @@ namespace Sonosthesia.MIDI
             }
             _subscriptions.Add(_input.NoteObservable.Subscribe(note =>
             {
+                if (ShouldFilterNote(note))
+                {
+                    return;
+                }
                 if (_notes.TryGetValue(note.Note, out Guid id))
                 {
                     if (note.Velocity == 0)
