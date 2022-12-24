@@ -31,7 +31,7 @@ namespace Sonosthesia.MIDI
                 .Where(control => control.Channel == _channel && control.Number == _number)
                 .Subscribe(control =>
                     {
-                        Broadcast(control.Value);
+                        Broadcast(control.Value / 127f);
                     });
         }
 

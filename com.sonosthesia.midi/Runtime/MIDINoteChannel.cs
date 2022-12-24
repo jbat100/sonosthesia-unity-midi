@@ -22,17 +22,13 @@ namespace Sonosthesia.MIDI
 
         private readonly Dictionary<int, Guid> _notes = new ();
 
-        protected virtual bool ShouldFilterNote(MIDINote note)
+        protected override void Awake()
         {
-            if (_channel >= 0 && note.Channel != _channel)
+            base.Awake();
+            if (!_input)
             {
-                return true;
+                _input = GetComponentInParent<MIDIInput>();
             }
-            if (note.Note < _lowerPitch || note.Note > _upperPitch)
-            {
-                return true;
-            }
-            return false;
         }
         
         protected override void OnEnable()
@@ -53,6 +49,7 @@ namespace Sonosthesia.MIDI
                 {
                     if (note.Velocity == 0)
                     {
+                        _notes.Remove(note.Note);
                         EndEvent(id, note);
                     }
                     else
@@ -72,6 +69,19 @@ namespace Sonosthesia.MIDI
         {
             base.OnDisable();
             _subscriptions.Clear();
+        }
+        
+        protected virtual bool ShouldFilterNote(MIDINote note)
+        {
+            if (_channel >= 0 && note.Channel != _channel)
+            {
+                return true;
+            }
+            if (note.Note < _lowerPitch || note.Note > _upperPitch)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

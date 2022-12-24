@@ -26,7 +26,7 @@ namespace Sonosthesia.MIDI
                 Selection.Unit => 1f,
                 Selection.Channel => value.Channel / 16f,
                 Selection.Note => value.Note / 127f,
-                Selection.Velocity => value.Velocity,
+                Selection.Velocity => value.Velocity  / 127f,
                 _ => throw new ArgumentOutOfRangeException(nameof(value), value, null)
             };
         }
