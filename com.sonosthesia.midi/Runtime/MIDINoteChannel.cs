@@ -12,6 +12,8 @@ namespace Sonosthesia.MIDI
     {
         [SerializeField] private MIDIInput _input;
 
+        [Header("Filtering")]
+        
         [SerializeField] private int _channel;
 
         [SerializeField] private int _lowerPitch;
@@ -35,7 +37,7 @@ namespace Sonosthesia.MIDI
         {
             base.OnEnable();
             _subscriptions.Clear();
-            if (_input == null)
+            if (!_input)
             {
                 return;
             }

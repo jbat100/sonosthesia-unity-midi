@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.Threading;
-using Cysharp.Threading.Tasks;
+using Sonosthesia.AdaptiveMIDI;
 using Sonosthesia.AdaptiveMIDI.Messages;
 using Sonosthesia.Flow;
-using UniRx;
 using UnityEngine;
+using UniRx;
 
 namespace Sonosthesia.MIDI
 {
@@ -31,80 +29,43 @@ namespace Sonosthesia.MIDI
         }
     }
 #endif
-    
-    public class MIDINoteChannelSequencer : ChannelSequencer<MIDINote>
+
+    [Serializable]
+    public class MIDINoteChannelSequenceElement : ChannelSequenceElement
     {
-        [Serializable]
-        private class SequenceEvent
-        {
-            public int Note;
-            public int Velocity;
-            public float Delay;
-            public float Duration = 1f;
-        }
+        [SerializeField] private int _note;
+        public int Note => _note;
 
-        [SerializeField] private int _channel; 
+        [SerializeField] private int _velocity;
+        public int Velocity => _velocity;
+    }
+    
+    // TODO: Think about targeting MIDIInput rather that MIDINoteChannel 
+    
+    public class MIDINoteChannelSequencer : ChannelSequencer<MIDINote, MIDINoteChannelSequenceElement>
+    {
+        [SerializeField] private MIDIInput _relay;
         
-        [SerializeField] private List<SequenceEvent> _midiNotes;
+        [SerializeField] private int _channel;
 
-        [SerializeField] private bool _loop;
-        
-        [SerializeField] private bool _emmitNoteOff;
-        
-        private CancellationTokenSource _cancellationTokenSource;
-
-        public void Play()
+        protected override void Sequence(IObservable<MIDINote> stream)
         {
-            _cancellationTokenSource?.Cancel();
-            _cancellationTokenSource = new CancellationTokenSource();
-            PlaySequence(_cancellationTokenSource.Token).Forget();
-        }
-
-        public void Stop()
-        {
-            _cancellationTokenSource?.Cancel();
-        }
-        
-        private async UniTask PlaySequence(CancellationToken cancellationToken)
-        {
-            int index = 0;
-            while (true)
+            base.Sequence(stream);
+            if (!_relay)
             {
-                cancellationToken.ThrowIfCancellationRequested();
-                if (index >= _midiNotes.Count)
-                {
-                    if (_loop)
-                    {
-                        index = 0;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-                await PlaySequenceEvent(_midiNotes[index], cancellationToken);
-                index++;
+                return;
             }
+            stream.Subscribe(note => _relay.Broadcast(note));
         }
 
-        private async UniTask PlaySequenceEvent(SequenceEvent sequenceEvent, CancellationToken cancellationToken)
+        protected override MIDINote ForgeStart(MIDINoteChannelSequenceElement element)
         {
-            await UniTask.Delay(TimeSpan.FromSeconds(sequenceEvent.Delay), cancellationToken: cancellationToken);
-            MIDINote noteOn = new MIDINote(_channel, sequenceEvent.Note, sequenceEvent.Velocity);
-            IObservable<MIDINote> stream = Observable.Return(noteOn);
-            if (_emmitNoteOff)
-            {
-                MIDINote noteOff = new MIDINote(_channel, sequenceEvent.Note, 0);
-                stream = stream.Concat(Observable.Timer(TimeSpan.FromSeconds(sequenceEvent.Duration))
-                    .Select(_ => noteOff));
-            }
-            else
-            {
-                stream = stream.Concat(Observable.Empty<MIDINote>()
-                    .Delay(TimeSpan.FromSeconds(sequenceEvent.Duration)));
-            }
-            Sequence(stream);
-            await stream.ToUniTask(cancellationToken: cancellationToken);
+            return new MIDINote(_channel, element.Note, element.Velocity);
+        }
+
+        protected override MIDINote ForgeEnd(MIDINoteChannelSequenceElement element)
+        {
+            return new MIDINote(_channel, element.Note, 0);
         }
     }
 }

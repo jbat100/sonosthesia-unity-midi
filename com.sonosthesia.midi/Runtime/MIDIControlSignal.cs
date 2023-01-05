@@ -27,6 +27,10 @@ namespace Sonosthesia.MIDI
         protected void OnEnable()
         {
             _subscription?.Dispose();
+            if (!_input)
+            {
+                return;
+            }
             _subscription = _input.ControlObservable
                 .Where(control => control.Channel == _channel && control.Number == _number)
                 .Subscribe(control =>
